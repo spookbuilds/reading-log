@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Log</title>
+</head>
+<body>
+    <header>
+        <h1>My Reading Log</h1>
+    </header>
+
+    <main>
+        <section id="add-book">
+            <form>
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" required>
+
+                <label for="author">Author</label>
+                <input type="text" id="author" name="author">
+
+                <label for="type">Type</label>
+                <select id="type" name="type">
+                    <option value="book">Book</option>
+                    <option value="audiobook">Audiobook</option>
+                </select>    
+
+                <label for="status">Status</label>
+                <select id="status" name="status">
+                    <option value="to-read">To Read</option>
+                    <option value="reading">Reading</option>
+                    <option value="finished">Finished</option>
+                </select>
+
+                <button type="Submit">Submit</button>
+            </form>
+        </section>
+
+
+
+        <section id="book-list">
+            <artice class="entry">
+                <h2>WoW</h2>
+                <p>Blizzard</p>
+                <p>Status: Reading</p>
+                <p>50% read</p>
+            </artice>
+
+            <artice class="entry">
+                <h2>Shadowhunters</h2>
+                <p>Woman</p>
+                <p>Status: Finished</p>
+                <p>100% read</p>
+            </artice>
+
+            <artice class="entry">
+                <h2>Harry Potter</h2>
+                <p>J.K. Rowling</p>
+                <p>Status: To Read</p>
+                <p>0% read</p>
+            </artice>
+        </section>
+    </main>
+
+
+
+
+
+
+
+
+
+</body>
+</html>
