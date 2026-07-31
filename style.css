@@ -1,0 +1,37 @@
+body {
+  font-family: "Lucida Console", "Courier New", monospace;
+  line-height: 1.5;
+  margin: 0;
+  padding: 20px;
+  background-color: #F9F7CF; 
+}
+
+
+
+/* Area backgrounds */
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+#add-book, #book-list {
+  max-width: 600px;
+  margin: 0 auto 30px auto;
+  padding: 20px;
+  background-color: #d1d4f7;
+  border-radius: 15px;
+}
+
+
+/* Entry Blocks */
+.entry {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+.entry h2 {
+  margin-top: 0;
+}
