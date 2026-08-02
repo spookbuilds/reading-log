@@ -12,8 +12,9 @@ let books = [
   { id: 2, title: "Harry Potter", author: "J.K. Rowling", status: "reading" },
 ];
 
-app.get("/api/books", function (req, res) {
-  res.json(books);
+app.get("/api/books", async function (req, res) {
+  const result = await pool.query("SELECT * FROM books");
+  res.json(result.rows);
 });
 
 app.listen(port, function () {
@@ -21,12 +22,10 @@ app.listen(port, function () {
 });
 
 
-app.get("/api/books/:id", function (req, res) {
+app.get("/api/books/:id", async function (req, res) {
   const id = Number(req.params.id);
-  const book = books.find(function (b) {
-    return b.id === id;
-  });
-  res.json(book);
+  const result = await pool.query("SELECT * FROM books WHERE id = $1", [id]);
+  res.json(result.rows[0]);
 });
 
 
@@ -68,4 +67,16 @@ app.delete("/api/books/:id", function (req, res) {
     return b.id !== id;
   });
   res.json({ message: "Book deleted" });
+});
+
+
+
+const { Pool } = require("pg");
+
+const pool = new Pool({
+  user: "postgres",
+  host: "localhost",
+  database: "reading_log",
+  password: "6512",
+  port: 5432,
 });
