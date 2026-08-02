@@ -40,28 +40,25 @@ app.post("/api/books", async function (req, res) {
 
 
 
-app.patch("/api/books/:id", function (req, res) {
+app.patch("/api/books/:id", async function (req, res) {
   const id = Number(req.params.id);
-  const book = books.find(function (b) {
-    return b.id === id;
-  });
+  const result = await pool.query(
+    "UPDATE books SET status = $1 WHERE id = $2 RETURNING *",
+    [req.body.status, id]
+  );
 
-  if (!book) {
+  if (result.rows.length === 0) {
     return res.status(404).json({ error: "Book not found" });
   }
 
-  book.status = req.body.status;
-
-  res.json(book);
+  res.json(result.rows[0]);
 });
 
 
 
-app.delete("/api/books/:id", function (req, res) {
+app.delete("/api/books/:id", async function (req, res) {
   const id = Number(req.params.id);
-  books = books.filter(function (b) {
-    return b.id !== id;
-  });
+  await pool.query("DELETE FROM books WHERE id = $1", [id]);
   res.json({ message: "Book deleted" });
 });
 
