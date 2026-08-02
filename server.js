@@ -30,16 +30,12 @@ app.get("/api/books/:id", async function (req, res) {
 
 
 
-app.post("/api/books", function (req, res) {
-  const newBook = {
-    id: books.length + 1,
-    title: req.body.title,
-    author: req.body.author,
-    status: req.body.status,
-  };
-
-  books.push(newBook);
-  res.json(newBook);
+app.post("/api/books", async function (req, res) {
+  const result = await pool.query(
+    "INSERT INTO books (title, author, type, status) VALUES ($1, $2, $3, $4) RETURNING *",
+    [req.body.title, req.body.author, req.body.type, req.body.status]
+  );
+  res.json(result.rows[0]);
 });
 
 
