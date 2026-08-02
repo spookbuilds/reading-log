@@ -2,7 +2,34 @@
 const list = document.querySelector("#book-list");
 const form = document.querySelector("form");
 
-form.addEventListener("submit", function (event) {
+
+
+
+// API get books
+async function loadBooks() {
+  const response = await fetch("/api/books");
+  const books = await response.json();
+
+  books.forEach(function (book) {
+    const article = document.createElement("article");
+    article.className = "entry";
+    article.innerHTML = `
+      <h2>${book.title}</h2>
+      <p>${book.author}</p>
+      <p>Status: ${book.status}</p>
+      <button class="delete-btn">Delete</button>
+    `;
+    list.appendChild(article);
+  });
+}
+
+loadBooks();
+
+
+
+
+// Submit form
+form.addEventListener("submit", async function (event) {
   event.preventDefault();
 
   const data = new FormData(event.target);
@@ -13,20 +40,19 @@ form.addEventListener("submit", function (event) {
     status: data.get("status"),
   };
 
-  console.log(newEntry);
+  const response = await fetch("/api/books", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(newEntry),
+  });
 
-
-const article = document.createElement("article");
-article.className = "entry";
-article.innerHTML = `
-  <h2>${newEntry.title}</h2>
-  <p>${newEntry.author}</p>
-  <p>Status: ${newEntry.status}</p>
-  <button class="delete-btn">Delete</button>
-`;
-
-list.appendChild(article);
+  const savedBook = await response.json();
+    list.innerHTML = "";
+    loadBooks();
 });
+
+
+
 
 
 // Delete Btn
