@@ -44,8 +44,8 @@ app.post("/api/books", async function (req, res) {
 app.patch("/api/books/:id", async function (req, res) {
   const id = Number(req.params.id);
   const result = await pool.query(
-    "UPDATE books SET status = $1 WHERE id = $2 RETURNING *",
-    [req.body.status, id]
+    "UPDATE books SET status = $1, percent_read = $2, rating = $3 WHERE id = $4 RETURNING *",
+    [req.body.status, req.body.percent_read, req.body.rating, id]
   );
 
   if (result.rows.length === 0) {

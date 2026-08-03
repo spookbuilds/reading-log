@@ -13,10 +13,15 @@ async function loadBooks() {
   books.forEach(function (book) {
     const article = document.createElement("article");
     article.className = "entry";
+    article.dataset.id = book.id;
+    article.dataset.status = book.status;
     article.innerHTML = `
       <h2>${book.title}</h2>
       <p>${book.author}</p>
       <p>Status: ${book.status}</p>
+      <label>% read: <input type="number" class="percent-input" value="${book.percent_read}" min="0" max="100"></label>
+      <label>Rating: <input type="number" class="rating-input" value="${book.rating ?? ""}" min="1" max="5"></label>
+      <button class="save-btn">Save</button>
       <button class="delete-btn">Delete</button>
     `;
     list.appendChild(article);
@@ -56,9 +61,25 @@ form.addEventListener("submit", async function (event) {
 
 
 // Delete Btn
-list.addEventListener("click", function (event) {
+list.addEventListener("click", async function (event) {
   if (event.target.classList.contains("delete-btn")) {
     const card = event.target.parentElement;
+    const id = card.dataset.id;
+    await fetch(`/api/books/${id}`, { method: "DELETE" });
     card.remove();
+  }
+
+  if (event.target.classList.contains("save-btn")) {
+    const card = event.target.parentElement;
+    const id = card.dataset.id;
+    const status = card.dataset.status;
+    const percentRead = card.querySelector(".percent-input").value;
+    const rating = card.querySelector(".rating-input").value;
+
+    await fetch(`/api/books/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: status, percent_read: percentRead, rating: rating || null }),
+    });
   }
 });
